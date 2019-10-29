@@ -15,6 +15,7 @@ class FeedPage extends Component {
 
   handleAddPost = (post) => {
     PostsModel.add(post);
+    // PostsModel.addUser(post, this.user);
     const posts = PostsModel.get();
     this.setState({ posts });
   }

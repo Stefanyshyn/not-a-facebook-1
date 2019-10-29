@@ -1,7 +1,7 @@
 import uuid from 'uuid';
+import md5 from 'md5';
 import Collection from '../utils/collection';
 
-const md5 = require('md5');
 // const user = {
 //   id: String
 //   username: String
