@@ -6,7 +6,13 @@ import UsersModel from '../modules/users';
 
 class UserProfilePage extends Component {
   state = {
-    currentUser: UsersModel.me(),
+    currentUser: null,
+  }
+
+  constructor(props) {
+    super(props);
+    const user = UsersModel.getUserById(props.match.params);
+    this.state.currentUser = user;
   }
 
   render() {

@@ -27,6 +27,7 @@ export const initUserDocument = (username, password, profile) => ({
   profile,
   createdAt: new Date(),
   lastLoginDate: new Date(),
+  id: uuid(),
   accessTokens: [],
 });
 
@@ -95,7 +96,7 @@ class Users {
   };
 
   getByID = (selector) => {
-    const user = this.findOne(selector);
+    const user = this.collection.findOne(selector);
     if (!user) {
       throw new Error('Not round');
     }
