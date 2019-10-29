@@ -64,6 +64,11 @@ export class Users {
 
   me = () => UsersServer.findUserByToken(this.token)
 
+  getUserById = ({ id }) => {
+    const user = UsersServer.getByID({ id });
+    return user;
+  }
+
   isLoggedIn = () => !!this.token
 }
 

@@ -94,7 +94,13 @@ class Users {
     return accessToken;
   };
 
-
+  getByID = (selector) => {
+    const user = this.findOne(selector);
+    if (!user) {
+      throw new Error('Not round');
+    }
+    return user;
+  }
   // get = () => _.orderBy(this.collection.find({}), ['createdAt'], ['desc'])
 
   // add = ({ body }) => this.collection.insert({ body })

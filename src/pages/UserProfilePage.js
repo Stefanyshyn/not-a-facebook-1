@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Image from 'react-bootstrap/Image';
 import { Redirect } from 'react-router-dom';
 import UsersModel from '../modules/users';
 // import posts from '../__mocks__/posts';
@@ -14,7 +15,8 @@ class UserProfilePage extends Component {
       <>
         { !currentUser ? (<Redirect to="/login" />) : (
           <>
-            Hello world
+            <Image src={`${currentUser.profile.avatar}`} height="200px" />
+            <div>{ `${currentUser.profile.firstName} ${currentUser.profile.lastName}` }</div>
           </>
         )}
       </>
