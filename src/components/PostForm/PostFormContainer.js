@@ -1,49 +1,46 @@
 /* eslint-disable no-console */
-import React, { Component } from 'react';
+import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import PostForm from './PostForm';
 import { createPost } from '../../utils/creators';
 import UsersModule from '../../modules/users';
 
-class PostFormContainer extends Component {
-  state = {
+function PostFormContainer(props) {
+  const [state, setState] = useState({
     textAreaVisible: true,
     curUser: UsersModule.me(),
     body: '',
-  }
+  });
 
-  toggleTextArea = () => {
+  const toggleTextArea = useCallback(() => {
     // eslint-disable-next-line react/destructuring-assignment
-    this.setState((prevState) => ({
-      textAreaVisible: !prevState.textAreaVisible,
-    }));
-  }
+    setState((s) => ({ ...s, textAreaVisible: !s.textAreaVisible }));
+  }, []);
 
-  handleSubmit = (e) => {
+  const handleSubmit = useCallback((e) => {
     e.preventDefault();
-    const { curUser } = this.state;
-    const { handleAddPost } = this.props;
+    const { curUser } = state;
+    const { handleAddPost } = props;
     const post = createPost(e.target.body.value, curUser);
     handleAddPost(post);
-    this.setState({ body: '' });
-  }
+    setState((s) => ({ ...s, body: '' }));
+  }, []);
 
-  handleChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
-  }
+  const handleChange = useCallback((e) => {
+    const { name, value } = e.target;
+    setState((s) => ({ ...s, [name]: value }));
+  }, []);
 
-  render() {
-    const { textAreaVisible, body } = this.state;
-    return (
-      <PostForm
-        toggleTextArea={this.toggleTextArea}
-        handleSubmit={this.handleSubmit}
-        handleChange={this.handleChange}
-        textAreaVisible={textAreaVisible}
-        body={body}
-      />
-    );
-  }
+  const { textAreaVisible, body } = state;
+  return (
+    <PostForm
+      toggleTextArea={toggleTextArea}
+      handleSubmit={handleSubmit}
+      handleChange={handleChange}
+      textAreaVisible={textAreaVisible}
+      body={body}
+    />
+  );
 }
 
 PostFormContainer.propTypes = {

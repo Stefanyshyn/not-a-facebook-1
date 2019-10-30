@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   Form, Input, Button, Alert,
 } from 'reactstrap';
@@ -13,17 +13,17 @@ const mockProfile = () => ({
   avatar: faker.internet.avatar(),
 });
 
-class LoginForm extends Component {
-  state = {
+function LoginForm(props) {
+  const [state, setState] = useState({
     username: '',
     password: '',
     errLogin: { active: false, msg: '' },
-  }
+  });
 
-  handleSubmit = (e) => {
+  const handleSubmit = useCallback((e) => {
     e.preventDefault();
-    const { history, isLogin } = this.props;
-    const { username, password } = this.state;
+    const { history, isLogin } = props;
+    const { username, password } = state;
     try {
       if (isLogin) {
         UsersModel.login(username, password);
@@ -32,9 +32,9 @@ class LoginForm extends Component {
       }
       history.push(routes.feed);
     } catch (err) {
-      this.setState({ errLogin: { active: true, msg: err } });
+      setState((s) => ({ ...s, errLogin: { active: true, msg: err } }));
     }
-  }
+  }, [state]);
 
   // handleLogOut = (e) => {
   //   e.preventDefault();
@@ -42,69 +42,67 @@ class LoginForm extends Component {
   //   this.setState({ curUser: UsersModel.me() });
   // }
 
-  handleChange = (e) => {
+  const handleChange = useCallback((e) => {
     const { name, value } = e.target;
-    this.setState({ [name]: value });
-  }
+    setState((s) => ({ ...s, [name]: value }));
+  }, []);
 
-  render() {
-    const { isLogin } = this.props;
-    const {
-      username, password, errLogin,
-    } = this.state;
-    return (
-      <div>
-        <h2 className="text-center">{isLogin ? 'Login' : 'Create an account'}</h2>
-        <Form onSubmit={this.handleSubmit}>
-          <div className="login-form">
-            <Alert color="danger" isOpen={errLogin.active}>
-              {errLogin.msg.toString()}
-            </Alert>
-            <Input
-              type="text"
-              name="username"
-              placeholder="Username"
-              value={username}
-              // pattern="^[a-z0-9_-]{3,15}$"
-              onChange={this.handleChange}
-            />
-            <Input
-              type="password"
-              name="password"
-              placeholder="password"
-              value={password}
-              // title="Для прикладу: 1Aaaaaaa"
-              // pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$"
-              onChange={this.handleChange}
-            />
-            <Button
-              className="login-form-submit"
-              type="submit"
-              color="secondary"
-              disabled={!(username && password)}
-            >
-              {isLogin ? 'Log In' : 'Sign Up'}
-            </Button>
-            <div>
-              {
-                isLogin ? (
-                  <div>
-                    Don&apos;t have an account? <Link to={routes.signUp}>Sign up</Link>
-                    <br />
-                    Forgot password? <Link to={routes.forgotPassword}>Reset password</Link>
-                  </div>
-                ) : (
-                  <div>
-                      Already have an account? <Link to={routes.login}>Login</Link>
-                  </div>
-                )
-              }
-            </div>
+  const { isLogin } = props;
+  const {
+    username, password, errLogin,
+  } = state;
+  return (
+    <div>
+      <h2 className="text-center">{isLogin ? 'Login' : 'Create an account'}</h2>
+      <Form onSubmit={handleSubmit}>
+        <div className="login-form">
+          <Alert color="danger" isOpen={errLogin.active}>
+            {errLogin.msg.toString()}
+          </Alert>
+          <Input
+            type="text"
+            name="username"
+            placeholder="Username"
+            value={username}
+            // pattern="^[a-z0-9_-]{3,15}$"
+            onChange={handleChange}
+          />
+          <Input
+            type="password"
+            name="password"
+            placeholder="password"
+            value={password}
+            // title="Для прикладу: 1Aaaaaaa"
+            // pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$"
+            onChange={handleChange}
+          />
+          <Button
+            className="login-form-submit"
+            type="submit"
+            color="secondary"
+            disabled={!(username && password)}
+          >
+            {isLogin ? 'Log In' : 'Sign Up'}
+          </Button>
+          <div>
+            {
+              isLogin ? (
+                <div>
+                  Don&apos;t have an account? <Link to={routes.signUp}>Sign up</Link>
+                  <br />
+                  Forgot password? <Link to={routes.forgotPassword}>Reset password</Link>
+                </div>
+              ) : (
+                <div>
+                    Already have an account? <Link to={routes.login}>Login</Link>
+                </div>
+              )
+            }
           </div>
-        </Form>
-      </div>
-    );
-  }
+        </div>
+      </Form>
+    </div>
+  );
 }
 
 export default LoginForm;

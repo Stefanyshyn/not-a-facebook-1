@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   Form, Input, Button, Alert,
 } from 'reactstrap';
@@ -11,59 +11,58 @@ const mockProfile = () => ({
   avatar: faker.internet.avatar(),
 });
 
-class LoginForm extends Component {
-  state = {
+function LoginForm() {
+  const [state, setState] = useState({
     username: '',
     password: '',
     isLogin: true,
     errLogin: { active: false, message: '' },
-  }
+  });
 
-  toggleForm = () => {
-    this.setState(({ isLogin }) => ({ isLogin: !isLogin }));
-    this.setState({ errLogin: { active: false, message: '' } });
-  }
+  const toggleForm = useCallback(() => {
+    const { isLogin } = state;
+    setState((s) => ({ ...s, isLogin: !isLogin }));
+    setState((s) => ({ ...s, errLogin: { active: false, message: '' } }));
+  }, [state]);
 
-  handleSubmit = (e) => {
+  const handleSubmit = useCallback((e) => {
     e.preventDefault();
-    const { username, password, isLogin } = this.state;
+    const { username, password, isLogin } = state;
     try {
       if (isLogin) {
         UsersModel.login(username, password);
       } else {
         UsersModel.createAccount(username, password, mockProfile());
       }
-      this.setState({ errLogin: { active: false, message: '' } });
+      setState((s) => ({ ...s, errLogin: { active: false, message: '' } }));
     } catch (error) {
-      this.setState({ errLogin: { active: true, message: error } });
+      setState((s) => ({ ...s, errLogin: { active: true, message: error } }));
     }
-  }
+  }, [state]);
 
-  handleChange = (e) => {
+  const handleChange = useCallback((e) => {
     const { name, value } = e.target;
-    this.setState({ [name]: value });
-  }
+    setState((s) => ({ ...s, [name]: value }));
+  }, []);
 
-  onDismiss = () => {
-    this.setState({ errLogin: { active: false, message: '' } });
-  }
+  const onDismiss = useCallback(() => {
+    setState((s) => ({ ...s, errLogin: { active: false, message: '' } }));
+  }, []);
 
-  render() {
-    const {
-      username, password, isLogin, errLogin,
-    } = this.state;
-    return (
-      <Form onSubmit={this.handleSubmit}>
-        <Button type="button" onClick={this.toggleForm}>Toggle Form</Button>
-        <Input type="text" name="username" value={username} onChange={this.handleChange} />
-        <Input type="password" name="password" value={password} pattern="^(?=\w).{8,}$" onChange={this.handleChange} />
-        <Button type="submit">{ isLogin ? 'Log In' : 'Create Account' }</Button>
-        <Alert color="danger" isOpen={errLogin.active} toggle={this.onDismiss}>
-          {errLogin.message.toString()}
-        </Alert>
-      </Form>
-    );
-  }
+  const {
+    username, password, isLogin, errLogin,
+  } = state;
+  return (
+    <Form onSubmit={handleSubmit}>
+      <Button type="button" onClick={toggleForm}>Toggle Form</Button>
+      <Input type="text" name="username" value={username} onChange={handleChange} />
+      <Input type="password" name="password" value={password} pattern="^(?=\w).{8,}$" onChange={handleChange} />
+      <Button type="submit">{ isLogin ? 'Log In' : 'Create Account' }</Button>
+      <Alert color="danger" isOpen={errLogin.active} toggle={onDismiss}>
+        {errLogin.message.toString()}
+      </Alert>
+    </Form>
+  );
 }
 
 export default LoginForm;

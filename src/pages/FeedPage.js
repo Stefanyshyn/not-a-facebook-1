@@ -1,36 +1,31 @@
-import React, { Component } from 'react';
+import React, { useState, useCallback } from 'react';
 import Feed from '../components/Feed';
 import PostForm from '../components/PostForm';
 import PostsModel from '../modules/posts';
 // import posts from '../__mocks__/posts';
 
-class FeedPage extends Component {
-  state = {
-    posts: PostsModel.get(),
-  }
+function FeedPage() {
+  const [posts, setState] = useState(PostsModel.get());
 
-  handleAddPost = (post) => {
+  const handleAddPost = useCallback((post) => {
     PostsModel.add(post);
-    const posts = PostsModel.get();
-    this.setState({ posts });
-  }
+    const _posts = PostsModel.get();
+    setState(() => _posts);
+  }, []);
 
-  handleRemovePost = (post) => {
+  const handleRemovePost = useCallback((post) => {
     PostsModel.remove(post);
-    const posts = PostsModel.get();
-    this.setState({ posts });
-  }
+    const _posts = PostsModel.get();
+    setState(() => _posts);
+  }, []);
 
-  render() {
-    const { posts } = this.state;
-    return (
-      <>
-        <PostForm handleAddPost={this.handleAddPost} />
-        <Feed posts={posts} handleRemovePost={this.handleRemovePost} />
-      </>
+  return (
+    <>
+      <PostForm handleAddPost={handleAddPost} />
+      <Feed posts={posts} handleRemovePost={handleRemovePost} />
+    </>
 
-    );
-  }
+  );
 }
 
 export default FeedPage;
