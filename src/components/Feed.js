@@ -11,7 +11,6 @@ const Post = ({ body, ownerId, handleRemovePost }) => {
   const me = UsersModel.me();
   const owner = UsersModel.getUser(ownerId);
   const { avatar, firstName, lastName } = owner.profile;
-
   return (
     <div className="post-form">
       <Card className="post-card" outline color="secondary">

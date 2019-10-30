@@ -1,8 +1,8 @@
 import uuid from 'uuid';
 import _ from 'lodash';
+import md5 from 'md5';
 import Collection from '../utils/collection';
 
-const md5 = require('md5');
 // const user = {
 //   id: String
 //   username: String
@@ -28,6 +28,7 @@ export const initUserDocument = (username, password, profile) => ({
   profile,
   createdAt: new Date(),
   lastLoginDate: new Date(),
+  id: uuid(),
   accessTokens: [],
 });
 
