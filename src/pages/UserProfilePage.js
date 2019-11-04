@@ -4,6 +4,7 @@ import React, {
 import {
   Col, Form, Button, FormGroup, Label, Input, Media,
 } from 'reactstrap';
+// eslint-disable-next-line import/no-unresolved
 import { toast } from 'react-toastify';
 import ThemeContext from '../contexts/Theme';
 import UsersModel from '../modules/users';
