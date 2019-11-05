@@ -4,6 +4,7 @@ import React, {
 import {
   Col, Form, Button, FormGroup, Label, Input, Media, Spinner,
 } from 'reactstrap';
+// eslint-disable-next-line import/no-unresolved
 import { toast } from 'react-toastify';
 import _ from 'lodash';
 import ThemeContext from '../contexts/Theme';

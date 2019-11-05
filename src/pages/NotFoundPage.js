@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Alert } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout';
@@ -8,7 +8,7 @@ import routes from '../routes';
 
 
 const NotFoundPage = (props) => {
-  const isLogginIn = UsersModel.isLoggedIn();
+  const [isLogginIn] = useState(UsersModel.isLoggedIn());
   return (
     <>
       {isLogginIn} ?

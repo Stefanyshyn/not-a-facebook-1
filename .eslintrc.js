@@ -22,6 +22,7 @@ module.exports = {
     'react/jsx-one-expression-per-line': 'off',
     'linebreak-style': 'off',
     'react/jsx-wrap-multilines': 'off',
+    'react/destructuring-assignment': 'off',
     "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
     "react-hooks/exhaustive-deps": "warn", // Checks effect dependencies
     "indent": ["error", 2, { "ignoredNodes": ["JSXElement"] }],
