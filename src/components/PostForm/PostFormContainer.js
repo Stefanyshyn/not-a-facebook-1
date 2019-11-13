@@ -24,7 +24,7 @@ function PostFormContainer(props) {
     const post = createPost(e.target.body.value, curUser);
     handleAddPost(post);
     setState((s) => ({ ...s, body: '' }));
-  }, []);
+  }, [props, state]);
 
   const handleChange = useCallback((e) => {
     const { name, value } = e.target;

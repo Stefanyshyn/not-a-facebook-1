@@ -6,7 +6,6 @@ import {
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
-// eslint-disable-next-line import/no-unresolved
 import moment from 'moment';
 import UsersModel from '../modules/users';
 import routes from '../routes';

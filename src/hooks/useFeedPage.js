@@ -1,4 +1,5 @@
 // import { useState } from 'react';
+// eslint-disable-next-line import/no-unresolved
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 // import PostsModel from '../modules/posts';
@@ -51,6 +52,7 @@ const useFeedPage = () => {
     }).then(console.log).catch(console.warn);
   };
 
+  // eslint-disable-next-line no-unused-vars
   const handleRemovePost = (post) => {
     // TODO: handle remove post
     console.warn('remove post is temporarily unavailable');
